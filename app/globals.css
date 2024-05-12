@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 289 49.4% 4.24%;
+    --foreground: 289 7.6% 97.65%;
+
+    --muted: 289 38% 15.9%;
+    --muted-foreground: 289 7.6% 55.3%;
+
+    --popover: 289 49.8% 6.890000000000001%;
+    --popover-foreground: 289 7.6% 97.65%;
+
+    --card: 289 49.8% 6.890000000000001%;
+    --card-foreground: 289 7.6% 97.65%;
+
+    --border: 289 38% 15.9%;
+    --input: 289 38% 15.9%;
+
+    --primary: 289 76% 53%;
+    --primary-foreground: 289 7.6% 5.300000000000001%;
+
+    --secondary: 289 38% 15.9%;
+    --secondary-foreground: 289 7.6% 97.65%;
+
+    --accent: 289 38% 15.9%;
+    --accent-foreground: 289 7.6% 97.65%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 289 7.6% 97.65%;
+
+    --ring: 289 76% 53%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .small-screen {
+    display: none;
+  }
+  .large-screen {
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .hide-on-small-screens {
+    display: none;
+  }
+  .navbar {
+    margin-left: 20px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .image-container {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .image-container {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .image-container {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-iframe-container {
+    max-width: 1600px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+/* Image Size */
+.responsive-image {
+  width: 100%;
+  max-width: 70px;
+  height: auto;
+}
+
+.ql-container {
+  font-size: 18px !important;
+  background-color: transparent;
+  color: white;
+
+  font-weight: 200 !important;
+}
+
+.ql-snow {
+  background-color: white;
+  color: #191919;
+  overflow: visible;
+}
+
+.responsive-iframe-container {
+  position: relative;
+  padding-top: 56.25%;
+  overflow: hidden;
+  width: 100%;
+}
+
+.responsive-iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 9px;
+}
+
+.locked {
+  position: relative;
+  padding-top: 56.25%;
+  overflow: hidden;
+}
+
+.responsive-intro-video-container iframe {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80%;
+  border: 0;
+  border-radius: 9px;
+  min-height: 450px;
+}
+
+.sm\:px-20 {
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+.md\:px-0 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.bn-container[data-theming-css-variables-demo][data-color-scheme='dark'] {
+  --bn-colors-editor-text: #ffffff;
+  --bn-colors-editor-background: #2c2c2c;
+  --bn-colors-side-menu: #ffffff;
+}
+
+.masonry-grid > div {
+  width: auto !important;
+  flex: 0 !important;
+}
