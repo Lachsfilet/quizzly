@@ -14,15 +14,7 @@ export const createQuiz = async (data: any) => {
 // get all quizzes
 
 export const getAllQuizzes = async () => {
-  const unmappedQuizzes = await db.quiz.findMany()
-
-  const quizzes = unmappedQuizzes.map((quiz) => ({
-    id: quiz.id,
-    title: quiz.title,
-    description: quiz.description,
-    userId: quiz.userId,
-    createdAt: quiz.createdAt
-  }))
+  const quizzes = await db.quiz.findMany()
   
   return quizzes
 }
