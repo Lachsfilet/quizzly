@@ -1,4 +1,3 @@
-export const dynamic = 'force-static'
 import type { Metadata } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
