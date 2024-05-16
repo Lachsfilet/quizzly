@@ -39,6 +39,28 @@ export const getQuizzesByUserId = async (userId: string) => {
   return quizzes
 }
 
+// get questions by quizId 
+
+export const getQuestionsByQuizId = async (quizId: string) => {
+  const unmappedQuestions = await db.question.findMany({
+    where: {
+      quizId: quizId
+    }
+  })
+
+  return [...unmappedQuestions]
+}
+
+export const getOptionsByQuestionId = async (questionId: string) => {
+  const unmappedOptions = await db.option.findMany({
+    where: {
+      questionId: questionId
+    }
+  })
+
+  return [...unmappedOptions]
+}
+
 // delete quiz by id
 
 //    export const deleteQuiz = async (id: string) => {

@@ -1,4 +1,10 @@
-import { getQuizById } from '@/actions/quiz'
+import {
+  getOptionsByQuestionId,
+  getQuestionsByQuizId,
+  getQuizById
+} from '@/actions/quiz'
+
+import { QuizView } from '@/components/Quiz-View'
 
 export default async function Quiz({ params }: { params: { id: string } }) {
   const quiz = await getQuizById(params.id)
@@ -7,10 +13,9 @@ export default async function Quiz({ params }: { params: { id: string } }) {
     return <div>Quiz not found</div>
   }
 
-  return (
-    <div>
-      <h1>{quiz.title}</h1>
-      <p>{quiz.description}</p>
-    </div>
-  )
+  const questions: any[] = await getQuestionsByQuizId(quiz.id)
+  const optionsPromises = questions.map((q) => getOptionsByQuestionId(q.id))
+  const optionsArray = await Promise.all(optionsPromises)
+
+  return <QuizView questions={questions} optionsArray={optionsArray} />
 }
