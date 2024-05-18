@@ -6,8 +6,12 @@ import {
 
 import { QuizView } from '@/components/Quiz-View'
 
-export default async function Quiz({ params }: { params: { id: string } }) {
-  const quiz = await getQuizById(params.id)
+export default async function Quiz({
+  params
+}: {
+  params: { quizId: string; questionIndex: number }
+}) {
+  const quiz = await getQuizById(params.quizId)
 
   if (!quiz) {
     return <div>Quiz not found</div>
@@ -17,5 +21,12 @@ export default async function Quiz({ params }: { params: { id: string } }) {
   const optionsPromises = questions.map((q) => getOptionsByQuestionId(q.id))
   const optionsArray = await Promise.all(optionsPromises)
 
-  return <QuizView questions={questions} optionsArray={optionsArray} />
+  console.log(optionsArray)
+
+  return (
+    <QuizView
+      question={questions[params.questionIndex - 1]}
+      optionsArray={optionsArray[params.questionIndex - 1]}
+    />
+  )
 }

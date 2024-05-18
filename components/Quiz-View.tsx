@@ -1,13 +1,20 @@
 'use client'
-
 import { useCurrentUser } from '@/hooks/user-current-user'
 import Avatar from '@mui/material/Avatar'
-import { QuizViewProps } from '@/interfaces/option'
+import { Option } from '@/interfaces/option'
 import { Button } from './ui/button'
 import toast from 'react-hot-toast'
 import { MouseEventHandler } from 'react'
+import { useRouter } from 'next/navigation'
+import { Question } from '@/interfaces/question'
 
-export function QuizView({ questions, optionsArray }: QuizViewProps) {
+interface QuizViewProps {
+  question: Question
+  optionsArray: Option[]
+}
+
+export function QuizView({ question, optionsArray }: QuizViewProps) {
+  const router = useRouter()
   const session = useCurrentUser()
   let score = 0
 
@@ -17,12 +24,14 @@ export function QuizView({ questions, optionsArray }: QuizViewProps) {
         toast.error('Not right')
       } else {
         toast.success('Right')
+        // Update score or perform any other necessary actions here
       }
     }
   }
 
   if (!session) {
-    return <h1>Login pls</h1>
+    router.push('/auth/register')
+    return null
   }
 
   return (
@@ -43,22 +52,20 @@ export function QuizView({ questions, optionsArray }: QuizViewProps) {
         )}
       </div>
       <div className="w-full">
-        {questions.map((q: any, index: number) => (
-          <div key={index}>
-            <h1 className="text-5xl flex items-center justify-center backdrop-blur bg-accent/25">
-              {q.title}
-            </h1>
-            {optionsArray[index].map((o: any, i: number) => (
-              <Button
-                key={i}
-                onClick={validateQuiz(o.isCorrect)}
-                className="text-5xl"
-              >
-                {o.title}
-              </Button>
-            ))}
-          </div>
-        ))}
+        <div>
+          <h1 className="text-5xl flex items-center justify-center backdrop-blur bg-accent/25">
+            {question.title}
+          </h1>
+          {optionsArray.map((option: Option, i: number) => (
+            <Button
+              key={i}
+              onClick={validateQuiz(option.isCorrect)}
+              className="text-5xl"
+            >
+              {option.title}
+            </Button>
+          ))}
+        </div>
       </div>
     </div>
   )

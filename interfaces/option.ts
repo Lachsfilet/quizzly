@@ -7,8 +7,3 @@ export interface Option {
   questionId: string;
   createdAt: Date;
 }
-
-export interface QuizViewProps {
-  questions: Question[];
-  optionsArray: Option[][];
-}
