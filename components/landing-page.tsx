@@ -7,8 +7,6 @@ import 'aos/dist/aos.css'
 import { useEffect } from 'react'
 import PrimaryButton from './ui/get-started-button'
 
-// change that and use it for myself later (maybe)
-
 const features = [
   {
     icon: Rocket,
@@ -67,8 +65,7 @@ export const LandingPage: React.FC = () => {
                         <p className="mb-8 text-lg text-zinc-400">
                           Quizzly is a platform that helps you learn faster and
                           more effectively. We provide you with the best tools
-                          and resources to help you learn code and other
-                          technical skills.
+                          and resources to help you learn.
                         </p>
                         <dl className="max-w-xl grid grid-cols-1 gap-4 lg:max-w-none">
                           {features.map((feature) => (

@@ -11,9 +11,14 @@ import { Question } from '@/interfaces/question'
 interface QuizViewProps {
   question: Question
   optionsArray: Option[]
+  questionIndex: number
 }
 
-export function QuizView({ question, optionsArray }: QuizViewProps) {
+export function QuizView({
+  question,
+  optionsArray,
+  questionIndex
+}: QuizViewProps) {
   const router = useRouter()
   const session = useCurrentUser()
   let score = 0
@@ -24,7 +29,6 @@ export function QuizView({ question, optionsArray }: QuizViewProps) {
         toast.error('Not right')
       } else {
         toast.success('Right')
-        // Update score or perform any other necessary actions here
       }
     }
   }
