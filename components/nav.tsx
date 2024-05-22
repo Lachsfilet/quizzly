@@ -52,12 +52,6 @@ export default function Navbar() {
               >
                 Create Quizzes
               </Link>
-              <Link
-                href="/"
-                className="flex items-center hover:bg-white/5 h-full transition duration-300 px-4 rounded-lg"
-              >
-                Your Quizzes
-              </Link>
             </div>
             <div className="flex h-full gap-6 lg:gap-7">
               <UserButton />
