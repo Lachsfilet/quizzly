@@ -23,7 +23,7 @@ const SettingsPage = () => {
   }
 
   return !session ? (
-    router.push('/')
+    router.push('/auth/register')
   ) : (
     <div className="flex flex-col space-y-20 items-center justify-center pt-40 px-8 landing">
       <Tabs

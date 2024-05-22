@@ -1,3 +1,4 @@
+// TODO: fix toast running twice
 'use client'
 
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
@@ -51,6 +52,12 @@ const CardForm: React.FC = () => {
     { title: '', options: ['', '', '', ''], correctOption: null }
   ])
 
+  if (!user) {
+    toast.error('Please register to create a quiz!')
+    router.push('/auth/register')
+    return
+  }
+
   useEffect(() => {
     const savedQuiz = localStorage.getItem('savedQuiz')
     if (savedQuiz) {
@@ -59,7 +66,21 @@ const CardForm: React.FC = () => {
       setDropdowns(dropdowns)
       localStorage.removeItem('savedQuiz')
     }
-  }, [])
+  }, [router])
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.setItem(
+        'savedQuiz',
+        JSON.stringify({ quizTitle, dropdowns })
+      )
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [quizTitle, dropdowns])
 
   const handleQuizTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuizTitle(event.target.value)
@@ -121,20 +142,10 @@ const CardForm: React.FC = () => {
     try {
       QuizSchema.parse({ quizTitle, dropdowns })
 
-      if (!user) {
-        localStorage.setItem(
-          'savedQuiz',
-          JSON.stringify({ quizTitle, dropdowns })
-        )
-        toast.error('Please register to create a quiz!')
-        router.push('/auth/register')
-        return
-      }
-
       const quiz = {
         title: quizTitle,
         description: `Description for ${quizTitle}`, // Replace with an actual description if needed
-        userId: user.id,
+        userId: user?.id,
         questions: {
           create: dropdowns.map((dropdown) => ({
             title: dropdown.title,
@@ -158,6 +169,7 @@ const CardForm: React.FC = () => {
       setDropdowns([
         { title: '', options: ['', '', '', ''], correctOption: null }
       ])
+      localStorage.removeItem('savedQuiz')
     } catch (e: any) {
       if (e.errors && e.errors.length > 0) {
         toast.error(e.errors[0].message)
@@ -198,7 +210,6 @@ const CardForm: React.FC = () => {
                       placeholder="Enter question title"
                     />
                   </div>
-
                   {dropdown.options.map((option, optionIndex) => (
                     <div key={optionIndex} className="mb-2 flex items-center">
                       <label className="block mb-2 w-full">
@@ -222,7 +233,8 @@ const CardForm: React.FC = () => {
                         }
                       />
                     </div>
-                  ))}
+                  ))}{' '}
+                  toast.error('Please register to create a quiz!')
                   <Button
                     variant="outline"
                     className="mb-2"
