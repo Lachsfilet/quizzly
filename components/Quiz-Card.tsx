@@ -23,7 +23,7 @@ export function QuizCard({ quizzes }: { quizzes: Quiz[] }) {
           {quizzes.map((quiz: Quiz) => (
             <button
               onClick={() => {
-                push(`/quiz/${quiz?.id}`)
+                push(`/quiz/${quiz?.id}/1`)
               }}
             >
               <CardContainer

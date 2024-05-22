@@ -14,6 +14,7 @@ import {
   AccordionTrigger,
   AccordionContent
 } from '@/components/ui/accordion'
+import { Separator } from './ui/separator'
 import { createQuiz } from '@/actions/quiz'
 import { useCurrentUser } from '@/hooks/user-current-user'
 
@@ -180,9 +181,12 @@ const CardForm: React.FC = () => {
   return (
     <Card className="max-w-md mx-auto mt-8 p-6">
       <CardHeader>
-        <CardTitle>Quiz Form</CardTitle>
+        <CardTitle className="flex justify-center text-xxl">
+          Quiz Form
+        </CardTitle>
       </CardHeader>
-      <CardContent>
+      <Separator className="my-4 bg-slate-300/20" />
+      <CardContent className="mt-2">
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-2">Quiz Title:</label>
