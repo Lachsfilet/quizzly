@@ -34,6 +34,7 @@ export function QuizView({
   }
 
   if (!session) {
+    toast.error('Please Login to partake in this Quiz')
     router.push('/auth/register')
     return null
   }
