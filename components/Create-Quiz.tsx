@@ -238,7 +238,7 @@ const CardForm: React.FC = () => {
                       />
                     </div>
                   ))}{' '}
-                  toast.error('Please register to create a quiz!')
+                  '
                   <Button
                     variant="outline"
                     className="mb-2"
