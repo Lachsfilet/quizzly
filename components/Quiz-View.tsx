@@ -12,23 +12,35 @@ interface QuizViewProps {
   question: Question
   optionsArray: Option[]
   questionIndex: number
+  path: string
+  questionLength: number
 }
 
 export function QuizView({
   question,
   optionsArray,
-  questionIndex
+  questionIndex,
+  path,
+  questionLength
 }: QuizViewProps) {
   const router = useRouter()
   const session = useCurrentUser()
   let score = 0
 
-  function validateQuiz(right: boolean): MouseEventHandler<HTMLButtonElement> {
+  const validateQuiz = (
+    right: boolean
+  ): MouseEventHandler<HTMLButtonElement> => {
     return (event) => {
       if (!right) {
         toast.error('Not right')
       } else {
-        toast.success('Right')
+        if (questionIndex < questionLength) {
+          const nextIndex = +questionIndex + 1
+          router.push(`${path}/${nextIndex}`)
+        } else {
+          toast.success('Quiz completed!')
+          router.push(`${path}/1`) // TODO Redirect to a result or summary page
+        }
       }
     }
   }
