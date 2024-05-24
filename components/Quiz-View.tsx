@@ -35,7 +35,7 @@ export function QuizView({
         toast.error('Not right')
       } else {
         if (questionIndex < questionLength) {
-          const nextIndex = +questionIndex + 1
+          const nextIndex = questionIndex + 1
           router.push(`${path}/${nextIndex}`)
         } else {
           toast.success('Quiz completed!')

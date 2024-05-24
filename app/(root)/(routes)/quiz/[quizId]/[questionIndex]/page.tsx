@@ -32,7 +32,7 @@ export default async function Quiz({
     <QuizView
       question={questions[params.questionIndex - 1]}
       optionsArray={optionsArray[params.questionIndex - 1]}
-      questionIndex={params.questionIndex}
+      questionIndex={+params.questionIndex}
       questionLength={questions.length}
       path={path}
     />
