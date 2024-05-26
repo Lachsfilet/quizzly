@@ -1,4 +1,4 @@
-import CreateQuiz from '@/components/Create-Quiz'
+import { CreateQuiz } from '@/components/Create-Quiz'
 
 export default function Create() {
   return (

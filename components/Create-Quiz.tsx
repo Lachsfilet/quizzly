@@ -1,11 +1,10 @@
-// TODO: fix toast running twice
+// TODO: fix toast running twice, make form scrollable
 'use client'
 
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
 import { z } from 'zod'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,9 +13,32 @@ import {
   AccordionTrigger,
   AccordionContent
 } from '@/components/ui/accordion'
-import { Separator } from './ui/separator'
 import { createQuiz } from '@/actions/quiz'
 import { useCurrentUser } from '@/hooks/user-current-user'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import * as React from 'react'
+
+import { cn } from '@/lib/utils'
+import { useMediaQuery } from '@/hooks/use-media-query'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger
+} from '@/components/ui/drawer'
+import { Label } from '@/components/ui/label'
 
 interface Dropdown {
   title: string
@@ -45,7 +67,7 @@ const QuizSchema = z.object({
     .nonempty('At least one question must be added')
 })
 
-const CardForm: React.FC = () => {
+function CardForm({ className }: { className: string }) {
   const router = useRouter()
   const user = useCurrentUser()
   const [quizTitle, setQuizTitle] = useState<string>('')
@@ -179,85 +201,118 @@ const CardForm: React.FC = () => {
   }
 
   return (
-    <Card className="max-w-md mx-auto mt-8 p-6">
-      <CardHeader>
-        <CardTitle className="flex justify-center text-xxl">
-          Quiz Form
-        </CardTitle>
-      </CardHeader>
-      <Separator className="my-4 bg-slate-300/20" />
-      <CardContent className="mt-2">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block mb-2">Quiz Title:</label>
-            <Input
-              type="text"
-              value={quizTitle}
-              onChange={handleQuizTitleChange}
-              placeholder="Enter quiz title"
-            />
-          </div>
+    <form onSubmit={handleSubmit} className={cn(className)}>
+      <div className="mb-4">
+        <label className="block mb-2">Quiz Title:</label>
+        <Input
+          type="text"
+          value={quizTitle}
+          onChange={handleQuizTitleChange}
+          placeholder="Enter quiz title"
+        />
+      </div>
 
-          <Accordion type="single" collapsible className="mb-4">
-            {dropdowns.map((dropdown, index) => (
-              <AccordionItem key={index} value={`question-${index}`}>
-                <AccordionTrigger>Question {index + 1}</AccordionTrigger>
-                <AccordionContent>
-                  <div className="mb-2">
-                    <label className="block mb-2">Question Title:</label>
+      <Accordion type="single" collapsible className="mb-4">
+        {dropdowns.map((dropdown, index) => (
+          <AccordionItem key={index} value={`question-${index}`}>
+            <AccordionTrigger>Question {index + 1}</AccordionTrigger>
+            <AccordionContent>
+              <div className="mb-2">
+                <label className="block mb-2">Question Title:</label>
+                <Input
+                  type="text"
+                  value={dropdown.title}
+                  onChange={(event) => handleDropdownTitleChange(index, event)}
+                  placeholder="Enter question title"
+                />
+              </div>
+              {dropdown.options.map((option, optionIndex) => (
+                <div key={optionIndex} className="mb-2 flex items-center">
+                  <label className="block mb-2 w-full">
+                    Option {optionIndex + 1}:
                     <Input
                       type="text"
-                      value={dropdown.title}
+                      value={option}
                       onChange={(event) =>
-                        handleDropdownTitleChange(index, event)
+                        handleOptionChange(index, optionIndex, event)
                       }
-                      placeholder="Enter question title"
+                      placeholder={`Enter option ${optionIndex + 1}`}
+                      className="ml-2"
                     />
-                  </div>
-                  {dropdown.options.map((option, optionIndex) => (
-                    <div key={optionIndex} className="mb-2 flex items-center">
-                      <label className="block mb-2 w-full">
-                        Option {optionIndex + 1}:
-                        <Input
-                          type="text"
-                          value={option}
-                          onChange={(event) =>
-                            handleOptionChange(index, optionIndex, event)
-                          }
-                          placeholder={`Enter option ${optionIndex + 1}`}
-                          className="ml-2"
-                        />
-                      </label>
-                      <input
-                        type="radio"
-                        name={`correctOption-${index}`}
-                        checked={dropdown.correctOption === optionIndex}
-                        onChange={() =>
-                          handleCorrectOptionChange(index, optionIndex)
-                        }
-                      />
-                    </div>
-                  ))}{' '}
-                  '
-                  <Button
-                    variant="outline"
-                    className="mb-2"
-                    onClick={() => handleRemoveDropdown(index)}
-                  >
-                    Remove Question
-                  </Button>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+                  </label>
+                  <input
+                    type="radio"
+                    name={`correctOption-${index}`}
+                    checked={dropdown.correctOption === optionIndex}
+                    onChange={() =>
+                      handleCorrectOptionChange(index, optionIndex)
+                    }
+                  />
+                </div>
+              ))}{' '}
+              <Button
+                variant="outline"
+                className="mb-2"
+                onClick={() => handleRemoveDropdown(index)}
+              >
+                Remove Question
+              </Button>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
 
-          <Button type="button" onClick={handleAddDropdown} className="mr-2">
-            Add Question
-          </Button>
-          <Button type="submit">Submit</Button>
-        </form>
-      </CardContent>
-    </Card>
+      <Button type="button" onClick={handleAddDropdown} className="mr-2">
+        Add Question
+      </Button>
+      <Button type="submit">Submit</Button>
+    </form>
+  )
+}
+
+export function CreateQuiz() {
+  const [open, setOpen] = React.useState(false)
+  const isDesktop = useMediaQuery('(min-width: 768px)')
+
+  if (isDesktop) {
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button variant="outline">Create quiz</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Create quiz</DialogTitle>
+            <DialogDescription>
+              Create a quiz here. Click Submit when you're done.
+            </DialogDescription>
+          </DialogHeader>
+          <CardForm className="" />
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
+  return (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <Button variant="outline">Create quiz</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader className="text-left">
+          <DrawerTitle>Create quiz</DrawerTitle>
+          <DrawerDescription>
+            Create a quiz here. Click Submit when you're done.
+          </DrawerDescription>
+        </DrawerHeader>
+        <CardForm className="px-4" />
+        <DrawerFooter className="pt-2">
+          <DrawerClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   )
 }
 
