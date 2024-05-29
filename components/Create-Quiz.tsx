@@ -71,6 +71,7 @@ function CardForm({ className }: { className: string }) {
   const router = useRouter()
   const user = useCurrentUser()
   const [quizTitle, setQuizTitle] = useState<string>('')
+  const [quizDescription, setQuizDescription] = useState<string>('')
   const [dropdowns, setDropdowns] = useState<Dropdown[]>([
     { title: '', options: ['', '', '', ''], correctOption: null }
   ])
@@ -107,6 +108,12 @@ function CardForm({ className }: { className: string }) {
 
   const handleQuizTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuizTitle(event.target.value)
+  }
+
+  const handleQuizDescriptionChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    setQuizDescription(event.target.value)
   }
 
   const handleDropdownTitleChange = (
@@ -163,16 +170,16 @@ function CardForm({ className }: { className: string }) {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     try {
-      QuizSchema.parse({ quizTitle, dropdowns })
+      QuizSchema.parse({ quizTitle, quizDescription, dropdowns })
 
       const quiz = {
         title: quizTitle,
-        description: `Description for ${quizTitle}`, // Replace with an actual description if needed
+        description: `${quizDescription}`, // Replace with an actual description if needed
         userId: user?.id,
         questions: {
           create: dropdowns.map((dropdown) => ({
             title: dropdown.title,
-            description: `Description for ${dropdown.title}`, // Replace with an actual description if needed
+            description: `${quizDescription}`, // Replace with an actual description if needed
             options: {
               create: dropdown.options.map((option, optionIndex) => ({
                 title: option,
@@ -208,6 +215,13 @@ function CardForm({ className }: { className: string }) {
           type="text"
           value={quizTitle}
           onChange={handleQuizTitleChange}
+          placeholder="Enter quiz title"
+        />
+        <label className="block mb-2">Quiz Description:</label>
+        <Input
+          type="text"
+          value={quizDescription}
+          onChange={handleQuizDescriptionChange}
           placeholder="Enter quiz title"
         />
       </div>
