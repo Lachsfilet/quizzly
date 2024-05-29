@@ -1,4 +1,3 @@
-// TODO: fix toast running twice, make form scrollable
 'use client'
 
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
@@ -15,9 +14,7 @@ import {
 } from '@/components/ui/accordion'
 import { createQuiz } from '@/actions/quiz'
 import { useCurrentUser } from '@/hooks/user-current-user'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import * as React from 'react'
-
 import { cn } from '@/lib/utils'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import {
@@ -67,7 +64,7 @@ const QuizSchema = z.object({
     .nonempty('At least one question must be added')
 })
 
-function CardForm({ className }: { className: string }) {
+function CardForm({ className }: { className?: string }) {
   const router = useRouter()
   const user = useCurrentUser()
   const [quizTitle, setQuizTitle] = useState<string>('')
@@ -75,12 +72,15 @@ function CardForm({ className }: { className: string }) {
   const [dropdowns, setDropdowns] = useState<Dropdown[]>([
     { title: '', options: ['', '', '', ''], correctOption: null }
   ])
+  const [toastShown, setToastShown] = useState(false)
 
-  if (!user) {
-    toast.error('Please register to create a quiz!')
-    router.push('/auth/register')
-    return
-  }
+  useEffect(() => {
+    if (!user && !toastShown) {
+      toast.error('Please register to create a quiz!')
+      setToastShown(true)
+      router.push('/auth/register')
+    }
+  }, [user, toastShown, router])
 
   useEffect(() => {
     const savedQuiz = localStorage.getItem('savedQuiz')
@@ -90,7 +90,7 @@ function CardForm({ className }: { className: string }) {
       setDropdowns(dropdowns)
       localStorage.removeItem('savedQuiz')
     }
-  }, [router])
+  }, [])
 
   useEffect(() => {
     const handleBeforeUnload = () => {
@@ -208,21 +208,26 @@ function CardForm({ className }: { className: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={cn(className)}>
+    <form
+      onSubmit={handleSubmit}
+      className={cn(className, 'max-h-[75vh] overflow-auto p-4')}
+    >
       <div className="mb-4">
-        <label className="block mb-2">Quiz Title:</label>
+        <label className="block mb-2 text-white">Quiz Title:</label>
         <Input
           type="text"
           value={quizTitle}
           onChange={handleQuizTitleChange}
           placeholder="Enter quiz title"
+          className="mb-2"
         />
-        <label className="block mb-2">Quiz Description:</label>
+        <label className="block mb-2 text-white">Quiz Description:</label>
         <Input
           type="text"
           value={quizDescription}
           onChange={handleQuizDescriptionChange}
-          placeholder="Enter quiz title"
+          placeholder="Enter quiz description"
+          className="mb-2"
         />
       </div>
 
@@ -232,17 +237,18 @@ function CardForm({ className }: { className: string }) {
             <AccordionTrigger>Question {index + 1}</AccordionTrigger>
             <AccordionContent>
               <div className="mb-2">
-                <label className="block mb-2">Question Title:</label>
+                <label className="block mb-2 text-white">Question Title:</label>
                 <Input
                   type="text"
                   value={dropdown.title}
                   onChange={(event) => handleDropdownTitleChange(index, event)}
                   placeholder="Enter question title"
+                  className="mb-2"
                 />
               </div>
               {dropdown.options.map((option, optionIndex) => (
                 <div key={optionIndex} className="mb-2 flex items-center">
-                  <label className="block mb-2 w-full">
+                  <label className="block mb-2 w-full text-white">
                     Option {optionIndex + 1}:
                     <Input
                       type="text"
@@ -251,7 +257,7 @@ function CardForm({ className }: { className: string }) {
                         handleOptionChange(index, optionIndex, event)
                       }
                       placeholder={`Enter option ${optionIndex + 1}`}
-                      className="ml-2"
+                      className="ml-2 mb-2"
                     />
                   </label>
                   <input
@@ -263,7 +269,7 @@ function CardForm({ className }: { className: string }) {
                     }
                   />
                 </div>
-              ))}{' '}
+              ))}
               <Button
                 variant="outline"
                 className="mb-2"
@@ -290,43 +296,47 @@ export function CreateQuiz() {
 
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Create quiz</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Create quiz</DialogTitle>
-            <DialogDescription>
-              Create a quiz here. Click Submit when you're done.
-            </DialogDescription>
-          </DialogHeader>
-          <CardForm className="" />
-        </DialogContent>
-      </Dialog>
+      <div className="max-h-50p overflow-scroll">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button variant="outline">Create quiz</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Create quiz</DialogTitle>
+              <DialogDescription>
+                Create a quiz here. Click Submit when you're done.
+              </DialogDescription>
+            </DialogHeader>
+            <CardForm className="" />
+          </DialogContent>
+        </Dialog>
+      </div>
     )
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline">Create quiz</Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>Create quiz</DrawerTitle>
-          <DrawerDescription>
-            Create a quiz here. Click Submit when you're done.
-          </DrawerDescription>
-        </DrawerHeader>
-        <CardForm className="px-4" />
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+    <div>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          <Button variant="outline">Create quiz</Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader className="text-left">
+            <DrawerTitle>Create quiz</DrawerTitle>
+            <DrawerDescription>
+              Create a quiz here. Click Submit when you're done.
+            </DrawerDescription>
+          </DrawerHeader>
+          <CardForm className="max-h-[calc(100vh-150px)] overflow-auto" />
+          <DrawerFooter className="pt-2">
+            <DrawerClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </div>
   )
 }
 

@@ -25,6 +25,8 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
   const [questions, setQuestions] = useState<Question[]>([])
   const [optionsArray, setOptionsArray] = useState<Option[][]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [score, setScore] = useState(0)
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     async function fetchQuizData() {
@@ -54,22 +56,34 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
     return <div>Loading...</div>
   }
 
-  const handleNextQuestion = () => {
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex(currentIndex + 1)
-      toast.success('Right')
+  const handleNextQuestion = (right: boolean) => {
+    if (right) {
+      if (currentIndex < questions.length - 1) {
+        toast.success('Right')
+        setScore(+1)
+        setCurrentIndex(currentIndex + 1)
+      } else {
+        toast.success('Quiz completed!')
+        setScore(+1)
+        setSuccess(true)
+        return <h1 className="text-10">{score}</h1>
+      }
     } else {
-      toast.success('Quiz completed!')
+      toast.error('Wrong')
+      setCurrentIndex(currentIndex + 1)
     }
   }
 
-  return (
-    <QuizView
-      question={questions[currentIndex]}
-      optionsArray={optionsArray[currentIndex]}
-      questionIndex={currentIndex + 1}
-      questionLength={questions.length}
-      onNextQuestion={handleNextQuestion}
-    />
-  )
+  if (!!!success) {
+    return (
+      <QuizView
+        question={questions[currentIndex]}
+        optionsArray={optionsArray[currentIndex]}
+        onNextQuestion={handleNextQuestion}
+        score={score}
+      />
+    )
+  } else {
+    return <h1>null</h1>
+  }
 }

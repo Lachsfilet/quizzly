@@ -18,6 +18,9 @@ const config = withUt({
       }
     },
     extend: {
+        maxHeight: {
+          '50p': '50%'
+        },
       screens: {
         xxs: '360px',
         xs: '480px'

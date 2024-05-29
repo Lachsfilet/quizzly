@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+'force-dynamic'
 import { QuizCard } from '@/components/Quiz-Card'
 import { getAllQuizzes } from '@/actions/quiz'
 

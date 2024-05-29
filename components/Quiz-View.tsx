@@ -10,30 +10,23 @@ import { Question } from '@/interfaces/question'
 interface QuizViewProps {
   question: Question
   optionsArray: Option[]
-  questionIndex: number
-  questionLength: number
-  onNextQuestion: () => void
+  onNextQuestion: (isRight: boolean) => void
+  score: number
 }
 
 export function QuizView({
   question,
   optionsArray,
-  questionIndex,
-  questionLength,
-  onNextQuestion
+  onNextQuestion,
+  score
 }: QuizViewProps) {
   const session = useCurrentUser()
-  let score = 0
 
   const validateQuiz = (
     right: boolean
   ): MouseEventHandler<HTMLButtonElement> => {
     return () => {
-      if (!right) {
-        toast.error('Not right')
-      } else {
-        onNextQuestion()
-      }
+      onNextQuestion(right)
     }
   }
 

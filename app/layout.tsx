@@ -8,6 +8,7 @@ import Scroll from '@/components/Scroll'
 import { GeistSans } from 'geist/font/sans'
 import Navbar from '@/components/nav'
 import { Banner } from '@/components/banner'
+import { ConfettiProvder } from '@/components/providers/confetti'
 const geist = GeistSans
 
 export const metadata: Metadata = {
@@ -32,11 +33,11 @@ export default async function RootLayout({
       <html lang="en" className="bg-background text-white">
         <body className={geist.className}>
           <Navbar />
-          <Banner label="Currently under Construction" />
           <Scroll />
           <ToastProvider />
+          <ConfettiProvder />
           {/*<GoogleAnalytics gaId={`${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />*/}
-          {children}
+          <div className="mt-5">{children}</div>
           <Analytics />
         </body>
       </html>
