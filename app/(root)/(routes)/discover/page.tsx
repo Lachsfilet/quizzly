@@ -1,6 +1,7 @@
 'force-dynamic'
 import { QuizCard } from '@/components/Quiz-Card'
 import { getAllQuizzes } from '@/actions/quiz'
+import { CreateQuiz } from '@/components/Create-Quiz'
 
 export interface Quiz {
   id: string
@@ -23,5 +24,10 @@ export default async function Discover() {
 
   console.log(quizzes)
 
-  return <QuizCard quizzes={quizzes} />
+  return (
+    <div>
+      <QuizCard quizzes={quizzes} />
+      <CreateQuiz />
+    </div>
+  )
 }

@@ -329,11 +329,6 @@ export function CreateQuiz() {
             </DrawerDescription>
           </DrawerHeader>
           <CardForm className="max-h-[calc(100vh-150px)] overflow-auto" />
-          <DrawerFooter className="pt-2">
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </div>
