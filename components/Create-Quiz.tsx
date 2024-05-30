@@ -174,12 +174,12 @@ function CardForm({ className }: { className?: string }) {
 
       const quiz = {
         title: quizTitle,
-        description: `${quizDescription}`, // Replace with an actual description if needed
+        description: `${quizDescription}`,
         userId: user?.id,
         questions: {
           create: dropdowns.map((dropdown) => ({
             title: dropdown.title,
-            description: `${quizDescription}`, // Replace with an actual description if needed
+            description: `${quizDescription}`,
             options: {
               create: dropdown.options.map((option, optionIndex) => ({
                 title: option,
@@ -192,9 +192,7 @@ function CardForm({ className }: { className?: string }) {
 
       await createQuiz(quiz)
       toast.success('Quiz submitted successfully!')
-      console.log('Quiz data:', { quizTitle, dropdowns })
 
-      // Reset the form
       setQuizTitle('')
       setDropdowns([
         { title: '', options: ['', '', '', ''], correctOption: null }

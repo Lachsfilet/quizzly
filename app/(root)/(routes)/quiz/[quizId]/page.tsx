@@ -10,6 +10,10 @@ import { QuizView } from '@/components/Quiz-View'
 import toast from 'react-hot-toast'
 import { Question } from '@/interfaces/question'
 import { Option } from '@/interfaces/option'
+import { useConfettiStore } from '@/lib/confetti'
+import { Separator } from '@/components/ui/separator'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 interface Quiz {
   id: string
@@ -20,6 +24,7 @@ interface Quiz {
 
 export default function QuizPage({ params }: { params: { quizId: string } }) {
   const router = useRouter()
+  const confetti = useConfettiStore()
   const { quizId } = params
   const [quiz, setQuiz] = useState<Quiz | null>(null)
   const [questions, setQuestions] = useState<Question[]>([])
@@ -57,20 +62,26 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
   }
 
   const handleNextQuestion = (right: boolean) => {
-    if (right) {
-      if (currentIndex < questions.length - 1) {
-        toast.success('Right')
-        setScore(+1)
-        setCurrentIndex(currentIndex + 1)
+    if (currentIndex + 2 > questions.length) {
+      if (right) {
+        setScore(score + 1)
+        toast.success('Quiz completed!')
+        setSuccess(true)
+        confetti.onOpen()
       } else {
         toast.success('Quiz completed!')
-        setScore(+1)
         setSuccess(true)
-        return <h1 className="text-10">{score}</h1>
+        confetti.onOpen()
       }
     } else {
-      toast.error('Wrong')
-      setCurrentIndex(currentIndex + 1)
+      if (right) {
+        toast.success('Right')
+        setScore(score + 1)
+        setCurrentIndex(currentIndex + 1)
+      } else {
+        toast.error('Wrong')
+        setCurrentIndex(currentIndex + 1)
+      }
     }
   }
 
@@ -84,6 +95,45 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
       />
     )
   } else {
-    return <h1>null</h1>
+    return (
+      <div className="flex justify-center items-center min-h-screen p-4">
+        <div className="text-center p-6 bg-background rounded-lg shadow-lg max-w-xl w-full">
+          <h1 className="font-bold text-4xl sm:text-5xl lg:text-6xl mb-4">
+            Congratulations
+          </h1>
+          <Separator />
+          <div className="mt-4">
+            {score > 1 ? (
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl text-gray-800">
+                You got{' '}
+                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-gradient-start to-gradient-end text-6xl sm:text-7xl lg:text-8xl">
+                  {score}
+                </span>{' '}
+                out of{' '}
+                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-gradient-start to-gradient-end text-6xl sm:text-7xl lg:text-8xl">
+                  {questions.length}
+                </span>{' '}
+                questions right.
+              </h1>
+            ) : (
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl text-gray-800">
+                You got{' '}
+                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-gradient-start to-gradient-end text-6xl sm:text-7xl lg:text-8xl">
+                  {score}
+                </span>{' '}
+                question right.
+              </h1>
+            )}
+          </div>
+          <div className="mt-6">
+            <Link href="/discover">
+              <Button className="px-4 py-2 text-white bg-accent rounded-lg">
+                Return Home
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
   }
 }
