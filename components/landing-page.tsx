@@ -48,6 +48,11 @@ export const LandingPage: React.FC = () => {
               <Separator className="mt-8 bg-slate-100/20 h-0.5 w-40" />
             </div>
           </div>
+          <div className="w-full flex justify-center items-center md:hidden">
+            <PrimaryButton href="/discover" className="bg-accent w-[11rem]">
+              See Quizzes
+            </PrimaryButton>
+          </div>
           <div className="text-center space-y-40 pt-12">
             <section>
               <div className="relative max-w-6xl px-4 mx-auto sm:px-6">

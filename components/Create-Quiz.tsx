@@ -35,7 +35,7 @@ import {
   DrawerTitle,
   DrawerTrigger
 } from '@/components/ui/drawer'
-import { Label } from '@/components/ui/label'
+import { Plus } from 'lucide-react'
 
 interface Dropdown {
   title: string
@@ -297,7 +297,13 @@ export function CreateQuiz() {
       <div className="max-h-50p overflow-scroll">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline">Create quiz</Button>
+            <button
+              className={`bg-background fixed flex items-start justify-center bottom-6 right-6 rounded-full border border-border outline-none duration-200 z-50 p-2 transition-all`}
+            >
+              <div className="">
+                <Plus className="h-10 w-10" />
+              </div>
+            </button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -317,7 +323,13 @@ export function CreateQuiz() {
     <div>
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>
-          <Button variant="outline">Create quiz</Button>
+          <button
+            className={`bg-background fixed flex items-start justify-center bottom-6 right-6 rounded-full border border-border outline-none duration-200 z-50 p-2 transition-all`}
+          >
+            <div className="">
+              <Plus className="h-10 w-10" />
+            </div>
+          </button>
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader className="text-left">

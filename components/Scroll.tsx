@@ -29,7 +29,7 @@ const Scroll = () => {
 
   return (
     <button
-      className={`fixed flex items-start justify-center bottom-6 right-6 rounded-full border border-zinc-600 outline-none duration-200 z-50 p-2 bg-zinc-800 hover:bg-zinc-900/50 transition-all ${
+      className={`fixed flex items-start justify-center bottom-6 left-6 rounded-full border border-border outline-none duration-200 z-50 p-2 transition-all ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
       onClick={scrollToTop}
