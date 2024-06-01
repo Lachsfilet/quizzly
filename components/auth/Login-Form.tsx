@@ -1,4 +1,5 @@
 'use client'
+
 import * as z from 'zod'
 import { CardWrapper } from '@/components/auth/Card-Wrapper'
 import { useForm } from 'react-hook-form'
@@ -15,13 +16,11 @@ import { LoginSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { login } from '@/actions/auth/login'
-import { useState, useTransition } from 'react'
+import { useEffect, useRef, useTransition } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
 
-import { FormSuccess } from '../Form-Success'
-import { FormError } from '../Form-Error'
-FormError
 export const LoginForm = () => {
   const searchParams = useSearchParams()
   const urlError =
@@ -30,8 +29,13 @@ export const LoginForm = () => {
       : ''
 
   const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | undefined>('')
-  const [success, setSuccess] = useState<string | undefined>('')
+  const hasDisplayedError = useRef(false)
+  useEffect(() => {
+    if (urlError && !hasDisplayedError.current) {
+      toast.error(urlError)
+      hasDisplayedError.current = true
+    }
+  }, [urlError])
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -42,12 +46,16 @@ export const LoginForm = () => {
   })
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    setError('')
-    setSuccess('')
     startTransition(() => {
       login(values).then((data) => {
-        setError(data?.error)
-        setSuccess(data?.success)
+        if (data?.error) {
+          toast.error(data.error)
+        }
+        if (data?.success) {
+          toast.success(data.success)
+          form.reset({ email: '', password: '' })
+          window.location.href = '/'
+        }
       })
     })
   }
@@ -60,7 +68,10 @@ export const LoginForm = () => {
       showSocial
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-1 w-full"
+        >
           <div className="space-y-2">
             <FormField
               control={form.control}
@@ -71,12 +82,13 @@ export const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="TylerDurden@gmail.com"
+                      placeholder="tylerdurden@gmail.com"
                       disabled={isPending}
                       type="email"
-                      className="bg-zinc-900 text-slate-100"
+                      className="bg-secondary border-primary/20"
                     />
                   </FormControl>
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -92,9 +104,10 @@ export const LoginForm = () => {
                       {...field}
                       disabled={isPending}
                       type="password"
-                      className="bg-zinc-900 text-slate-100"
+                      className="bg-secondary border-primary/20 text-2xl"
                     />
                   </FormControl>
+                  <FormMessage className="text-red-500" />
                   <Button
                     size="sm"
                     variant="link"
@@ -103,23 +116,21 @@ export const LoginForm = () => {
                   >
                     <Link href="/auth/reset">Forgot Password?</Link>
                   </Button>
-                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
           </div>
-          <FormError message={error || urlError} />
-          <FormSuccess message={success} />
-          <Button
+
+          <button
             disabled={isPending}
             type="submit"
-            className="p-[3px] relative font-semibold w-full"
+            className="p-[3px] bg-transparent relative font-semibold w-full"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-[5px] w-full" />
-            <div className="px-8 py-2  w-full bg-zinc-800 rounded-[5px]  relative group transition duration-200 text-white hover:bg-transparent text-lg">
-              Login &rarr;
+            <div className="absolute inset-0 bg-gradient-to-r from-gradient-start to-gradient-end rounded-[7.5px] w-full" />
+            <div className="px-8 py-2  w-full bg-secondary rounded-[5px] relative group transition duration-200 text-primary hover:text-white hover:bg-transparent text-lg">
+              Login
             </div>
-          </Button>
+          </button>
         </form>
       </Form>
     </CardWrapper>

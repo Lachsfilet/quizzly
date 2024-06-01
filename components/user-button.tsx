@@ -18,7 +18,7 @@ const UserButton = () => {
         <Button
           type="submit"
           onClick={onClick}
-          className="p-[2px] font-semibold rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 h-full"
+          className="p-[2px] font-semibold rounded-lg bg-gradient-to-r from-gradient-start to-gradient-end h-full"
         >
           <div className="flex items-center px-5 lg:px-7 h-full bg-zinc-800 rounded-md transition duration-300 text-white hover:bg-transparent text-base lg:text-lg">
             Sign Up
@@ -29,7 +29,7 @@ const UserButton = () => {
           <Avatar
             src={session.image ? session.image : ''}
             alt="logo"
-            className="shadow-md shadow-black hover:scale-110 transition-transform duration-300  bg-gradient-to-r from-pink-500 to-purple-500"
+            className="shadow-md shadow-black hover:scale-110 transition-transform duration-300  bg-gradient-to-r from-gradient-start to-gradient-end"
             sx={{ width: 40, height: 40 }}
           ></Avatar>
         </Link>

@@ -9,6 +9,7 @@ import { GeistSans } from 'geist/font/sans'
 import Navbar from '@/components/nav'
 import { Banner } from '@/components/banner'
 import { ConfettiProvder } from '@/components/providers/confetti'
+import CustomBackground from '@/components/designs/custom-bg'
 const geist = GeistSans
 
 export const metadata: Metadata = {
@@ -32,6 +33,7 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="en" className="bg-background text-white">
         <body className={geist.className}>
+          <CustomBackground />
           <Navbar />
           <Scroll />
           <ToastProvider />
