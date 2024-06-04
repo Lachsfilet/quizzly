@@ -28,7 +28,7 @@ export function QuizCard({ quizzes }: { quizzes: Quiz[] }) {
                 className="flex h-full cursor-default"
                 key={quiz?.id}
               >
-                <CardBody className="bg-background relative group/card border-border h-full rounded-xl px-6 py-4 border">
+                <CardBody className="relative group/card backdrop-blur-md bg-background/15 shadow-lg rounded-xl h-full px-6 py-4">
                   <div className="flex justify-between">
                     <CardItem
                       translateZ="50"

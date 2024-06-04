@@ -20,7 +20,7 @@ export default function Navbar() {
   }, [])
 
   const navbarChange = hasScrolled
-    ? 'backdrop-blur border-b border-slate-100/20 bg-background/90'
+    ? 'backdrop-blur border-b border-slate-100/20 bg-background/15'
     : 'bg-transparent border-b border-transparent'
 
   return (
@@ -34,6 +34,10 @@ export default function Navbar() {
               <Image src="/logo.svg" alt="logo.svg" width={150} height={150} />
             </h1>
           </Link>
+
+          <div className="md:hidden pr-5">
+            <UserButton />
+          </div>
 
           <div className="hidden md:flex h-[40px] items-center text-lg md:text-lg font-medium mr-2 gap-4 navbar transition-all">
             <div className="flex items-center lg:gap-4 h-full text-base lg:text-lg font-medium">

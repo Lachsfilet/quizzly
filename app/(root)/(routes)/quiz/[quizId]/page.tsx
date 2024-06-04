@@ -97,7 +97,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
   } else {
     return (
       <div className="flex justify-center items-center min-h-screen p-4">
-        <div className="text-center p-6 bg-background rounded-lg shadow-lg max-w-xl w-full">
+        <div className="text-center p-6 rounded-lg backdrop-blur-md bg-background/15 shadow-lg max-w-xl w-full">
           <h1 className="font-bold text-4xl sm:text-5xl lg:text-6xl mb-4">
             Congratulations
           </h1>

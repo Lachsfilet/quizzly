@@ -35,6 +35,12 @@
   }
 }
 
+@layer utilities {
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+}
+
 @media screen and (max-width: 768px) {
   .small-screen {
     display: block;

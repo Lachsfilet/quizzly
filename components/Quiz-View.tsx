@@ -6,6 +6,7 @@ import { Button } from './ui/button'
 import toast from 'react-hot-toast'
 import { MouseEventHandler } from 'react'
 import { Question } from '@/interfaces/question'
+import { useRouter } from 'next/navigation'
 
 interface QuizViewProps {
   question: Question
@@ -21,6 +22,7 @@ export function QuizView({
   score
 }: QuizViewProps) {
   const session = useCurrentUser()
+  const router = useRouter()
 
   const validateQuiz = (
     right: boolean
@@ -32,6 +34,7 @@ export function QuizView({
 
   if (!session) {
     toast.error('Please Login to partake in this Quiz')
+    router.push('/auth/register')
     return null
   }
 

@@ -1,7 +1,7 @@
 export default function CustomBackground() {
   return (
     <div className="fixed top-0 left-0 w-full h-full -z-10">
-      <div className="h-full w-full bg-black dark:bg-grid-white/[0.05] bg-grid-black/[0.05] relative flex items-center justify-center">
+      <div className="h-full w-fullbg-black bg-grid-white/[0.05] bg-grid-black/[0.05] relative flex items-center justify-center">
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-[#191919] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
         <div
           className="absolute w-full h-full top-[80px] opacity-15 blur-[100px] saturate-150"
