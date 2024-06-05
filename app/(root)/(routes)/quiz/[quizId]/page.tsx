@@ -14,6 +14,7 @@ import { useConfettiStore } from '@/lib/confetti'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { Oval } from 'react-loader-spinner'
 
 interface Quiz {
   id: string
@@ -58,7 +59,11 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
   }, [quizId, router])
 
   if (!quiz || questions.length === 0 || optionsArray.length === 0) {
-    return <div>Loading...</div>
+    return (
+      <div className="flex justify-center pt-[49vh] w-full">
+        <Oval color="#000000" height={50} width={50} />
+      </div>
+    )
   }
 
   const handleNextQuestion = (right: boolean) => {
@@ -85,7 +90,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
     }
   }
 
-  if (!!!success) {
+  if (!success) {
     return (
       <QuizView
         question={questions[currentIndex]}
