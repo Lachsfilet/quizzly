@@ -13,7 +13,7 @@ import CustomBackground from '@/components/designs/custom-bg'
 const geist = GeistSans
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://nizzyabi.com'),
+  metadataBase: new URL('https://quizzly.lachsfilet.tech'),
   title: {
     default: 'Quizzly',
     template: `%s | Quizzly`
