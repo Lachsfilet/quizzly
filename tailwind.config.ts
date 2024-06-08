@@ -29,6 +29,7 @@ const config = withUt({
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        blackx: 'rgb(0 0 0 / 0.2)',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {

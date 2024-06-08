@@ -7,10 +7,12 @@ import { useCallback, useEffect, useState } from 'react'
 import { FormError } from '@/components/Form-Error'
 import { FormSuccess } from '@/components/Form-Success'
 import { CircularProgress } from '@mui/material'
+import { boolean } from 'zod'
 
 export const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>()
   const [success, setSuccess] = useState<string | undefined>()
+  const [successBool, setSuccessBool] = useState<boolean | undefined>(false)
 
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
@@ -27,6 +29,7 @@ export const NewVerificationForm = () => {
       .then((data) => {
         setSuccess(data.success)
         setError(data.error)
+        setSuccessBool(true)
       })
       .catch(() => {
         setError('Something went wrong')
@@ -44,7 +47,7 @@ export const NewVerificationForm = () => {
       backButtonHref="/auth/login"
     >
       <div className="flex items-center w-full justify-center">
-        {!success && !error && <CircularProgress />}
+        {!success && !error && successBool && <CircularProgress />}
         <FormSuccess message={success} />
         {!success && <FormError message={error} />}
       </div>

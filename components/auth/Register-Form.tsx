@@ -62,11 +62,10 @@ export const RegisterForm = () => {
                   <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Tyler Durden"
+                      placeholder="John Doe"
                       {...field}
                       disabled={isPending}
                       type="name"
-                      className="bg-secondary border-primary/20"
                     />
                   </FormControl>
                   <FormMessage className="text-red-500" />
@@ -82,10 +81,9 @@ export const RegisterForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="tylerdurden@gmail.com"
+                      placeholder="john.doe@gmail.com"
                       disabled={isPending}
                       type="email"
-                      className="bg-secondary border-primary/20"
                     />
                   </FormControl>
                   <FormMessage className="text-red-500" />
@@ -104,7 +102,7 @@ export const RegisterForm = () => {
                       {...field}
                       disabled={isPending}
                       type="password"
-                      className="bg-secondary border-primary/20 text-2xl"
+                      className="text-2xl"
                     />
                   </FormControl>
                   <FormMessage className="text-red-500" />
@@ -119,7 +117,7 @@ export const RegisterForm = () => {
             className="p-[3px] bg-transparent relative font-semibold w-full"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-gradient-start to-gradient-end rounded-[7.5px] w-full" />
-            <div className="px-8 py-2 w-full bg-accent rounded-[5px] relative group transition duration-200 text-primary text-white hover:bg-transparent text-lg">
+            <div className="px-8 py-2 w-full bg-black/50 backdrop-blur-4xl hover:backdrop-blur-none rounded-[5px] relative group transition duration-200 text-white hover:bg-transparent text-lg">
               Register
             </div>
           </button>

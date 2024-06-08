@@ -1,6 +1,6 @@
 // Public Routes
 export const publicRoutes = [
-"/", '/api/webhook', "/coaching", "/courses", '/roadmap', "/auth/new-verification", '/api/uploadthing', , "/tutoring", '/courses/:courseId/info'
+"/", "/discover", "/auth/new-verification", '/quiz/:quizId'
 ]
 
 // Private Routes (if you had a login page, you would protect it after the user has been logged in as you dont want them to access the login page after they have logged in)
@@ -17,4 +17,4 @@ export const authRoutes = [
 export const apiAuthPrefix =  "/api/auth";
 
 // Default redirect path after login
-export const DEFAULT_LOGIN_REDIRECT = "/";
+export const DEFAULT_LOGIN_REDIRECT = "/discover";
