@@ -33,23 +33,17 @@ export function QuizView({
     }
   }
 
-  if (!session) {
-    toast.error('Please Login to partake in this Quiz')
-    router.push('/auth/register')
-    return null
-  }
-
   return (
     <div className="w-full mt-20">
       <div className="w-full flex justify-between items-center ml-5 mr-16 h-auto">
         <div className="flex items-center">
           <Avatar
-            src={session.image ? session.image : ''}
+            src={session?.image ? session?.image : ''}
             alt="logo"
             className="mr-5 shadow-md shadow-black hover:scale-110 transition-transform duration-300  bg-gradient-to-r from-gradient-start to-gradient-end"
             sx={{ width: 40, height: 40 }}
           ></Avatar>
-          <h1 className="text-xl">{session.name}</h1>
+          <h1 className="text-xl">{!session ? 'Anonymous' : session?.name}</h1>
         </div>
         <Badge variant={'secondary'} className="w-20 h-10 mr-10 text-center">
           <h2 className="text-xl">{score}</h2>
