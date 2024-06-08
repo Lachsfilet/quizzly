@@ -1,4 +1,4 @@
-'force-dynamic'
+export const revalidate = 0
 import { QuizCard } from '@/components/Quiz-Card'
 import { getAllQuizzes } from '@/actions/quiz'
 import { CreateQuiz } from '@/components/Create-Quiz'
