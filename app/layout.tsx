@@ -31,7 +31,7 @@ export default async function RootLayout({
   const session = await auth()
   return (
     <SessionProvider session={session}>
-      <html lang="en" className="bg-background body-background text-white">
+      <html lang="en" className="bg-background body-background overflow-hidden text-white">
         <body className={geist.className}>
           <CustomBackground />
           <Navbar />

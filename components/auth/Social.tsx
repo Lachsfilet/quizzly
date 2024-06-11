@@ -22,6 +22,15 @@ export const Social = () => {
         <IconBrandGithub className="h-6 w-6 mr-2" /> <span>Github</span>
         <BottomGradient />
       </Button>
+      <Button
+        size="lg"
+        className="xs:px-[20px] sm:px-[30px] md:px-[40px] lg:px-[68px] font-medium transition duration-300 hover:opacity-50 rounded-[5px] border-none text-md bg-accent"
+        variant="outline"
+        onClick={() => onClick('google')}
+      >
+        <IconBrandGoogle className="h-6 w-6 mr-2" /> <span>Google</span>
+        <BottomGradient />
+      </Button>
     </div>
   )
 }

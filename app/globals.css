@@ -101,6 +101,14 @@
   white-space: nowrap;
 }
 
+html {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+html::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
 /* Image Size */
 .responsive-image {
   width: 100%;
