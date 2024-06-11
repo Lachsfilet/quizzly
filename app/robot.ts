@@ -8,6 +8,6 @@ export default function robot(): MetadataRoute.Robots {
             allow: ["/"],
             disallow: []
         },
-        sitemap: 'nizzyabi.com/sitemap.xml'
+        sitemap: 'quizzly.lachsfilet.tech/sitemap.xml'
     }
 }

@@ -109,7 +109,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
           <Separator />
           <div className="mt-4">
             {score > 1 || score == 0 ? (
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl text-gray-800">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl text-gray-300">
                 You got{' '}
                 <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-gradient-start to-gradient-end text-6xl sm:text-7xl lg:text-8xl">
                   {score}
@@ -121,7 +121,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
                 questions right.
               </h1>
             ) : (
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl text-gray-800">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl text-gray-300">
                 You got{' '}
                 <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-gradient-start to-gradient-end text-6xl sm:text-7xl lg:text-8xl">
                   {score}
