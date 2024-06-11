@@ -36,7 +36,7 @@ export const LandingPage: React.FC = () => {
     })
   }, [])
   return (
-    <div className="landing pb-40 overflow-hidden">
+    <div className="landing pb-40">
       <div className=" px-4 mx-auto sm:px-6">
         <div>
           <div className="text-center pb-5 pt-40" data-aos="fade-up">
