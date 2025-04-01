@@ -3,6 +3,7 @@ import { QuizCard } from '@/components/Quiz-Card'
 import { getAllQuizzes } from '@/actions/quiz'
 import { CreateQuiz } from '@/components/Create-Quiz'
 import { Separator } from '@/components/ui/separator'
+import { getUserById } from '@/data/user'
 
 export interface Quiz {
   id: string
@@ -12,17 +13,45 @@ export interface Quiz {
   createdAt: Date
 }
 
+export interface UserInfo {
+  name: string
+  image: string
+}
+
+export interface QuizWithUserInfo {
+  id: string
+  title: string
+  description: string | null
+  userId: string
+  createdAt: Date
+  user: UserInfo
+}
+
 export default async function Discover() {
   const unmappedQuizzes: Quiz[] = await getAllQuizzes()
 
-  const quizzes = unmappedQuizzes.map((quiz) => ({
-    id: quiz.id,
-    title: quiz.title,
-    description: quiz.description,
-    userId: quiz.userId,
-    createdAt: quiz.createdAt
-  }))
-
+  const quizzes: QuizWithUserInfo[] = (await Promise.all(
+    unmappedQuizzes.map(async (quiz) => {
+      const user = await getUserById(quiz.userId);
+  
+      if (!user) {
+        return undefined;
+      }
+  
+      return {
+        id: quiz.id,
+        title: quiz.title,
+        description: quiz.description,
+        userId: quiz.userId,
+        createdAt: quiz.createdAt,
+        user: {
+          name: user.name,
+          image: user.image
+        }
+      };
+    })
+  )).filter((quiz): quiz is QuizWithUserInfo => quiz !== undefined);
+  
   return (
     <div>
       <div className="px-4 mx-auto sm:px-6">

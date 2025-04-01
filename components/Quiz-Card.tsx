@@ -5,10 +5,11 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
 import Link from 'next/link'
 
-import { Quiz } from '@/app/(root)/(routes)/discover/page'
+import { QuizWithUserInfo } from '@/app/(root)/(routes)/discover/page'
 import { useRouter } from 'next/navigation'
+import { Avatar } from '@mui/material'
 
-export function QuizCard({ quizzes }: { quizzes: Quiz[] }) {
+export function QuizCard({ quizzes }: { quizzes: QuizWithUserInfo[] }) {
   const { push } = useRouter()
 
   return (
@@ -18,7 +19,7 @@ export function QuizCard({ quizzes }: { quizzes: Quiz[] }) {
         columnsCountBreakPoints={{ 350: 1, 750: 2, 1100: 3 }}
       >
         <Masonry gutter="1.5rem" className="masonry-grid">
-          {quizzes.map((quiz: Quiz) => (
+          {quizzes.map((quiz: QuizWithUserInfo) => (
             <button
               onClick={() => {
                 push(`/quiz/${quiz.id}`)
@@ -37,8 +38,12 @@ export function QuizCard({ quizzes }: { quizzes: Quiz[] }) {
                       <div className="flex gap-2 items-center">
                         <span className="flex gap-0.5 items-center">
                           {quiz?.title}{' '}
-                          <p className="text-sm opacity-25 mr-5 hover:opacity-30">
-                            <Link href="/user/">by {quiz.title}</Link>
+            
+                          <p className="text-sm opacity-25 mr-5 hover:opacity-30 pl-2">
+                            <button>
+                              <Link href={`/user/${quiz.userId}`}>by {quiz.user.name}</Link>
+                            </button>
+                            
                           </p>
                         </span>
                       </div>
