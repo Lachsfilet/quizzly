@@ -2,8 +2,20 @@
 
 import { db } from '@/lib/db'
 import { Prisma } from '@prisma/client'
+import { auth } from '@/auth'
+import { rateLimit } from '@/lib/rate-limit'
 
 export const createQuiz = async (data: Prisma.QuizCreateInput) => {
+  const session = await auth()
+  if (!session?.user?.id) {
+    throw new Error('You must be logged in to create a quiz.')
+  }
+
+  const { success } = rateLimit(`create-quiz:${session.user.id}`)
+  if (!success) {
+    throw new Error('Too many requests. Please wait before creating another quiz.')
+  }
+
   const quiz = await db.quiz.create({
     data: data
   })
