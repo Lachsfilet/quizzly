@@ -196,7 +196,7 @@ describe('QuizSchema validation', () => {
     expect(results.every(Boolean)).toBe(true)
   })
 
-  it('rejects when quizTitle is only whitespace', () => {
+  it('accepts whitespace-only quiz title (nonempty does not trim)', () => {
     const result = QuizSchema.safeParse({
       ...validQuiz,
       quizTitle: '   '
