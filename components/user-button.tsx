@@ -28,7 +28,7 @@ const UserButton = () => {
         <Link href="/settings">
           <Avatar
             src={session.image ? session.image : ''}
-            alt="logo"
+            alt={`${session.name || 'User'} profile`}
             className="shadow-md shadow-black hover:scale-110 transition-transform duration-300  bg-gradient-to-r from-gradient-start to-gradient-end"
             sx={{ width: 40, height: 40 }}
           ></Avatar>

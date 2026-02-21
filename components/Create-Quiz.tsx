@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
+import { useState, useEffect, useRef, useCallback, ChangeEvent, FormEvent } from 'react'
 import { z } from 'zod'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
@@ -35,7 +35,7 @@ import {
   DrawerTitle,
   DrawerTrigger
 } from '@/components/ui/drawer'
-import { Plus } from 'lucide-react'
+import { Plus, Loader2 } from 'lucide-react'
 
 interface Dropdown {
   title: string
@@ -64,6 +64,8 @@ const QuizSchema = z.object({
     .nonempty('At least one question must be added')
 })
 
+const SUBMIT_COOLDOWN_MS = 2000
+
 function CardForm({ className }: { className?: string }) {
   const router = useRouter()
   const user = useCurrentUser()
@@ -73,6 +75,8 @@ function CardForm({ className }: { className?: string }) {
     { title: '', options: ['', '', '', ''], correctOption: null }
   ])
   const [toastShown, setToastShown] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const lastSubmitTime = useRef<number>(0)
 
   useEffect(() => {
     if (!user && !toastShown) {
@@ -167,15 +171,32 @@ function CardForm({ className }: { className?: string }) {
     setDropdowns(dropdowns.filter((_, i) => i !== index))
   }
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = useCallback(async (event: FormEvent) => {
     event.preventDefault()
+
+    if (isSubmitting) return
+
+    const now = Date.now()
+    if (now - lastSubmitTime.current < SUBMIT_COOLDOWN_MS) {
+      toast.error('Please wait before submitting again.')
+      return
+    }
+
+    setIsSubmitting(true)
+    lastSubmitTime.current = now
+
     try {
       QuizSchema.parse({ quizTitle, quizDescription, dropdowns })
+
+      if (!user?.id) {
+        toast.error('You must be logged in to create a quiz.')
+        return
+      }
 
       const quiz = {
         title: quizTitle,
         description: `${quizDescription}`,
-        userId: user?.id,
+        userId: user.id,
         questions: {
           create: dropdowns.map((dropdown) => ({
             title: dropdown.title,
@@ -194,16 +215,21 @@ function CardForm({ className }: { className?: string }) {
       toast.success('Quiz submitted successfully!')
 
       setQuizTitle('')
+      setQuizDescription('')
       setDropdowns([
         { title: '', options: ['', '', '', ''], correctOption: null }
       ])
       localStorage.removeItem('savedQuiz')
-    } catch (e: any) {
-      if (e.errors && e.errors.length > 0) {
+    } catch (e: unknown) {
+      if (e instanceof z.ZodError && e.errors.length > 0) {
         toast.error(e.errors[0].message)
+      } else {
+        toast.error('Failed to create quiz. Please try again.')
       }
+    } finally {
+      setIsSubmitting(false)
     }
-  }
+  }, [isSubmitting, quizTitle, quizDescription, dropdowns, user?.id])
 
   return (
     <form
@@ -218,6 +244,7 @@ function CardForm({ className }: { className?: string }) {
           onChange={handleQuizTitleChange}
           placeholder="Enter quiz title"
           className="mb-2"
+          disabled={isSubmitting}
         />
         <label className="block mb-2 text-white">Quiz Description:</label>
         <Input
@@ -226,6 +253,7 @@ function CardForm({ className }: { className?: string }) {
           onChange={handleQuizDescriptionChange}
           placeholder="Enter quiz description"
           className="mb-2"
+          disabled={isSubmitting}
         />
       </div>
 
@@ -242,6 +270,7 @@ function CardForm({ className }: { className?: string }) {
                   onChange={(event) => handleDropdownTitleChange(index, event)}
                   placeholder="Enter question title"
                   className="mb-2"
+                  disabled={isSubmitting}
                 />
               </div>
               {dropdown.options.map((option, optionIndex) => (
@@ -256,6 +285,7 @@ function CardForm({ className }: { className?: string }) {
                       }
                       placeholder={`Enter option ${optionIndex + 1}`}
                       className="ml-2 mb-2"
+                      disabled={isSubmitting}
                     />
                   </label>
                   <input
@@ -265,6 +295,8 @@ function CardForm({ className }: { className?: string }) {
                     onChange={() =>
                       handleCorrectOptionChange(index, optionIndex)
                     }
+                    aria-label={`Mark option ${optionIndex + 1} as correct answer`}
+                    disabled={isSubmitting}
                   />
                 </div>
               ))}
@@ -272,6 +304,7 @@ function CardForm({ className }: { className?: string }) {
                 variant="outline"
                 className="mb-2"
                 onClick={() => handleRemoveDropdown(index)}
+                disabled={isSubmitting}
               >
                 Remove Question
               </Button>
@@ -280,10 +313,19 @@ function CardForm({ className }: { className?: string }) {
         ))}
       </Accordion>
 
-      <Button type="button" onClick={handleAddDropdown} className="mr-2">
+      <Button type="button" onClick={handleAddDropdown} className="mr-2" disabled={isSubmitting}>
         Add Question
       </Button>
-      <Button type="submit">Submit</Button>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Submitting...
+          </>
+        ) : (
+          'Submit'
+        )}
+      </Button>
     </form>
   )
 }
@@ -299,6 +341,7 @@ export function CreateQuiz() {
           <DialogTrigger asChild>
             <button
               className={`bg-background fixed flex items-start justify-center bottom-6 right-6 rounded-full border border-border outline-none duration-200 z-50 p-2 transition-all`}
+              aria-label="Create new quiz"
             >
               <div className="">
                 <Plus className="h-10 w-10" />
@@ -325,6 +368,7 @@ export function CreateQuiz() {
         <DrawerTrigger asChild>
           <button
             className={`bg-background fixed flex items-start justify-center bottom-6 right-6 rounded-full border border-border outline-none duration-200 z-50 p-2 transition-all`}
+            aria-label="Create new quiz"
           >
             <div className="">
               <Plus className="h-10 w-10" />
