@@ -12,7 +12,9 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     subject: 'Confirm your email',
     html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`
   })
-
+  
+  if (!process.env.RESEND_AUDIENCE_ID) return
+  
   resend.contacts.create({
     email: email,
     audience_id: process.env.RESEND_AUDIENCE_ID
