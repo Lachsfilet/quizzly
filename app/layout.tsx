@@ -7,7 +7,6 @@ import { ToastProvider } from '@/components/providers/toaster-provider'
 import Scroll from '@/components/Scroll'
 import { GeistSans } from 'geist/font/sans'
 import Navbar from '@/components/nav'
-import { Banner } from '@/components/banner'
 import { ConfettiProvder } from '@/components/providers/confetti'
 import CustomBackground from '@/components/designs/custom-bg'
 const geist = GeistSans
@@ -18,8 +17,12 @@ export const metadata: Metadata = {
     default: 'Quizzly',
     template: `%s | Quizzly`
   },
+  description: 'Learn something && have fun doing it.',
   openGraph: {
-    description: 'Learn something && have fun doing it.'
+    title: 'Quizzly',
+    description: 'Learn something && have fun doing it.',
+    siteName: 'Quizzly',
+    type: 'website'
   }
 }
 
@@ -33,13 +36,18 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="en" className="bg-background body-background text-white">
         <body className={geist.className}>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded"
+          >
+            Skip to main content
+          </a>
           <CustomBackground />
           <Navbar />
           <Scroll />
           <ToastProvider />
           <ConfettiProvder />
-          {/*<GoogleAnalytics gaId={`${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />*/}
-          <div className="mt-5">{children}</div>
+          <main id="main-content" className="mt-5">{children}</main>
           <Analytics />
         </body>
       </html>

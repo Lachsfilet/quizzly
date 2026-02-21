@@ -29,8 +29,11 @@ const features = [
 
 export const LandingPage: React.FC = () => {
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
     AOS.init({
-      disable: 'phone',
+      disable: prefersReducedMotion || 'phone',
       duration: 800,
       easing: 'ease-out-cubic'
     })
@@ -99,7 +102,7 @@ export const LandingPage: React.FC = () => {
                         >
                           <Image
                             src="/dribbble.png"
-                            alt="App screenshot"
+                            alt="Quizzly quiz creation interface preview"
                             width={800}
                             height={600}
                             className="w-[76rem] z-10 rounded-xl"

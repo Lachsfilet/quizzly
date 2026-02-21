@@ -265,6 +265,7 @@ function CardForm({ className }: { className?: string }) {
                     onChange={() =>
                       handleCorrectOptionChange(index, optionIndex)
                     }
+                    aria-label={`Mark option ${optionIndex + 1} as correct answer`}
                   />
                 </div>
               ))}
@@ -299,6 +300,7 @@ export function CreateQuiz() {
           <DialogTrigger asChild>
             <button
               className={`bg-background fixed flex items-start justify-center bottom-6 right-6 rounded-full border border-border outline-none duration-200 z-50 p-2 transition-all`}
+              aria-label="Create new quiz"
             >
               <div className="">
                 <Plus className="h-10 w-10" />
@@ -325,6 +327,7 @@ export function CreateQuiz() {
         <DrawerTrigger asChild>
           <button
             className={`bg-background fixed flex items-start justify-center bottom-6 right-6 rounded-full border border-border outline-none duration-200 z-50 p-2 transition-all`}
+            aria-label="Create new quiz"
           >
             <div className="">
               <Plus className="h-10 w-10" />

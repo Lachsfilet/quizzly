@@ -12,6 +12,17 @@ import { Avatar } from '@mui/material'
 export function QuizCard({ quizzes }: { quizzes: QuizWithUserInfo[] }) {
   const { push } = useRouter()
 
+  if (quizzes.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <p className="text-xl text-slate-100/40">No quizzes found</p>
+        <p className="text-sm text-slate-100/30 mt-2">
+          Be the first to create one!
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="w-fit mx-auto pt-10">
       <ResponsiveMasonry
@@ -21,13 +32,13 @@ export function QuizCard({ quizzes }: { quizzes: QuizWithUserInfo[] }) {
         <Masonry gutter="1.5rem" className="masonry-grid">
           {quizzes.map((quiz: QuizWithUserInfo) => (
             <button
+              key={quiz.id}
               onClick={() => {
                 push(`/quiz/${quiz.id}`)
               }}
             >
               <CardContainer
                 className="flex h-full cursor-default"
-                key={quiz?.id}
               >
                 <CardBody className="relative group/card backdrop-blur-md bg-background/15 shadow-lg rounded-xl h-full px-6 py-4">
                   <div className="flex justify-between">
@@ -51,7 +62,7 @@ export function QuizCard({ quizzes }: { quizzes: QuizWithUserInfo[] }) {
                   </div>
 
                   <CardItem className="font-medium pt-4 opacity-80">
-                    <h1>{quiz.description}</h1>
+                    <p>{quiz.description}</p>
                   </CardItem>
                 </CardBody>
               </CardContainer>

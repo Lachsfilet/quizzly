@@ -4,6 +4,13 @@ import { getAllQuizzes } from '@/actions/quiz'
 import { CreateQuiz } from '@/components/Create-Quiz'
 import { Separator } from '@/components/ui/separator'
 import { getUserById } from '@/data/user'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Discover Quizzes',
+  description:
+    'Browse and discover quizzes created by the community. Create your own quiz and share it with others.'
+}
 
 export interface Quiz {
   id: string

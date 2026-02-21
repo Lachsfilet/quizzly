@@ -1,13 +1,12 @@
 'use server'
 
 import { db } from '@/lib/db'
-import { Quiz } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
-export const createQuiz = async (data: any) => {
+export const createQuiz = async (data: Prisma.QuizCreateInput) => {
   const quiz = await db.quiz.create({
     data: data
   })
-  console.log(quiz)
   return quiz
 }
 
@@ -60,13 +59,3 @@ export const getOptionsByQuestionId = async (questionId: string) => {
 
   return [...unmappedOptions]
 }
-
-// delete quiz by id
-
-//    export const deleteQuiz = async (id: string) => {
-//        const quiz = await db.quiz.delete({
-//            where: { id: id }
-//        });
-//
-//        return quiz;
-//    }

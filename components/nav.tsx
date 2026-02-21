@@ -30,9 +30,7 @@ export default function Navbar() {
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-2">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-center">
-            <h1>
-              <Image src="/logo.svg" alt="logo.svg" width={150} height={150} />
-            </h1>
+            <Image src="/logo.svg" alt="Quizzly home" width={150} height={150} />
           </Link>
 
           <div className="md:hidden pr-5">
