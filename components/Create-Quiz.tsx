@@ -188,10 +188,15 @@ function CardForm({ className }: { className?: string }) {
     try {
       QuizSchema.parse({ quizTitle, quizDescription, dropdowns })
 
+      if (!user?.id) {
+        toast.error('You must be logged in to create a quiz.')
+        return
+      }
+
       const quiz = {
         title: quizTitle,
         description: `${quizDescription}`,
-        userId: user?.id,
+        userId: user.id,
         questions: {
           create: dropdowns.map((dropdown) => ({
             title: dropdown.title,
